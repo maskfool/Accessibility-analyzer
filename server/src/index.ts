@@ -2,6 +2,9 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import { runAxeOnURL } from "./runAxe";
 import { getOpenAIResponse } from "./openaiHelper";
+import dotenv from "dotenv";
+dotenv.config();
+
 
 const app = express();
 const PORT = process.env.PORT || 5001; // Backend on port 5001
