@@ -1,12 +1,54 @@
-# React + Vite
+# ♿ Accessibility Analyzer 🔍
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack web app that audits the accessibility of any public URL using **axe-core**, **Puppeteer**, and **OpenAI GPT-4o**, and provides both a **score** and **AI-generated fix suggestions** for detected issues.
 
-Currently, two official plugins are available:
+Live Demo: [https://accessibility-analyzer.vercel.app](https://accessibility-analyzer.vercel.app)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## ✨ Features
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- 🔗 Enter any live website URL
+- ♿ Automatically detects accessibility issues using axe-core
+- 🧠 AI suggestions (via OpenAI) on how to fix each issue
+- 📊 Calculates a custom accessibility score
+- ⚡ Fast and simple UI built with React + Tailwind CSS
+- 🌐 Production-ready setup (Vercel + Railway)
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **React + Vite**
+- **Tailwind CSS**
+- Hosted on **Vercel**
+
+### Backend
+- **Node.js + Express**
+- **Puppeteer + axe-core** for accessibility scan
+- **OpenAI GPT-4o** for fix recommendations
+- Hosted on **Railway**
+
+---
+
+# 1. Clone the repository
+git clone https://github.com/maskfool/Accessibility-analyzer.git
+cd Accessibility-analyzer
+
+# 2. Install frontend dependencies and start Vite dev server
+npm install
+npm run dev
+
+# 3. In a new terminal, go to the backend folder
+cd server
+
+# 4. Install backend dependencies
+npm install
+
+# 5. Create a .env file and add your OpenAI API key
+echo "OPENAI_API_KEY=your-openai-key-here" > .env
+
+# 6. Start the backend server
+npm start
+
