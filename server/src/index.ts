@@ -11,11 +11,15 @@ const PORT = process.env.PORT || 5001; // Backend on port 5001
 
 // Configure CORS to allow frontend on http://localhost:5173
 app.use(cors({
-  origin: 'http://localhost:5173', // Allow frontend origin
-  methods: ['GET', 'POST', 'OPTIONS'], // Allow POST and OPTIONS for preflight
-  allowedHeaders: ['Content-Type', 'Authorization'], // Allow common headers
-  credentials: false // Set to true if using cookies/auth
+  origin: [
+    'http://localhost:5173', // ✅ allow local dev
+    'https://accessibility-scanner.vercel.app' // ✅ allow production frontend
+  ],
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: false
 }));
+
 
 // Log requests for debugging
 app.use((req, res, next) => {
