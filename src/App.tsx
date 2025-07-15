@@ -20,11 +20,12 @@ function App() {
     setResults(null);
 
     try {
-      const response = await fetch("/analyze", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: inputValue }),
-      });
+      const response = await fetch("https://accessibility-analyzer-production.up.railway.app/analyze", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ url: inputValue }),
+});
+
 
       const data = await response.json();
       if (response.ok) {
