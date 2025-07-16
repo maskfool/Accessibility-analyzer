@@ -44,7 +44,7 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
       <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-3xl">
-        <h1 className="text-2xl font-bold mb-4 text-center">♿ Accessibility Analyzer</h1>
+        <h1 className="text-2xl font-bold mb-4 text-center">♿ Enter URL to get optimised suggestions</h1>
 
         <form onSubmit={handleSubmit} className="flex gap-3 mb-6">
           <input
