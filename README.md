@@ -2,7 +2,7 @@
 
 A full-stack web app that audits the accessibility of any public URL using **axe-core**, **Puppeteer**, and **OpenAI GPT-4o**, and provides both a **score** and **AI-generated fix suggestions** for detected issues.
 
-Live Demo: [https://accessibility-analyzer.vercel.app](https://accessibility-analyzer.vercel.app)
+Live Demo: [https://accessly-ai.vercel.app](https://accessly-ai.vercel.app/)
 
 ---
 
