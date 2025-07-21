@@ -4,6 +4,7 @@ interface Result {
   score: number;
   issues: { id: string; message: string; impact: string }[];
   suggestions: { [key: string]: string };
+  screenshot: string; // ✅ NEW
 }
 
 function App() {
@@ -123,6 +124,16 @@ function App() {
                   </li>
                 ))}
               </ul>
+            </div>
+
+            {/* ✅ Screenshot Section */}
+            <div>
+              <h3 className="text-lg font-bold text-gray-800 mb-3">Page Preview</h3>
+              <img
+                src={`data:image/jpeg;base64,${results.screenshot}`}
+                alt="Website screenshot"
+                className="rounded-lg border shadow w-full max-h-[600px] object-contain"
+              />
             </div>
           </div>
         )}
