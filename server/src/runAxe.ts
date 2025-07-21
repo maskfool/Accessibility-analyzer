@@ -52,13 +52,12 @@ export async function runAxeOnURL(url: string): Promise<{ issues: Issue[]; scree
     await new Promise((resolve) => setTimeout(resolve, 3000));
 
     // ✅ Take screenshot
-    const screenshotBuffer = await page.screenshot({
+    const screenshotBuffer = (await page.screenshot({
   type: "jpeg",
   fullPage: true,
-});
+})) as Buffer;
 
-
-    const screenshot = screenshotBuffer.toString("base64");
+const screenshot = screenshotBuffer.toString("base64");
 
     console.log("🧪 Running Axe accessibility analysis...");
     const results = await new AxePuppeteer(page).analyze();
