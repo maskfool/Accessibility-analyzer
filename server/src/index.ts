@@ -1,56 +1,61 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
-import { runAxeOnURL } from "./runAxe";
-import { getOpenAIResponse } from "./openaiHelper";
 import dotenv from "dotenv";
 dotenv.config();
 
+import { runAxeOnURL } from "./runAxe";
+import { getOpenAIResponse } from "./openaiHelper";
 
 const app = express();
-const PORT = process.env.PORT || 5001; // Backend on port 5001
+const PORT = process.env.PORT || 5001;
 
-// Configure CORS to allow frontend on http://localhost:5173
+// ✅ CORS configuration
 app.use(cors({
   origin: [
-    // 'http://localhost:5173', // ✅ allow local dev
-    'https://accessly-ai.vercel.app' // ✅ allow production frontend
+    'https://accessly-ai.vercel.app', // allow production frontend
+    // 'http://localhost:5173',       // allow dev frontend (optional)
   ],
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: false
 }));
 
-
-// Log requests for debugging
+// 🔍 Log requests
 app.use((req, res, next) => {
   console.log(`Request: ${req.method} ${req.url} from ${req.headers.origin}`);
-  console.log('Headers:', req.headers);
   next();
 });
 
-// Handle preflight requests
+// 🛑 Handle preflight (CORS)
 app.options('/analyze', cors());
 
+// 🧠 Body parser
 app.use(express.json());
 
 app.post("/analyze", async (req: Request, res: Response) => {
   const { url } = req.body;
+
   if (!url || typeof url !== "string") {
     return res.status(400).json({ error: "Valid URL is required" });
   }
 
   try {
     console.log("🔍 Analyzing URL:", url);
-    const results = await runAxeOnURL(url);
-    console.log("✅ Axe Results:", results);
 
-    const aiSuggestions = await getOpenAIResponse(results);
+    // ✅ New: Get both issues & screenshot
+    const { issues, screenshot } = await runAxeOnURL(url);
+
+    console.log("✅ Axe Results:", issues);
+
+    const aiSuggestions = await getOpenAIResponse(issues);
 
     res.json({
-      issues: results,
+      issues,
       suggestions: aiSuggestions,
-      score: calculateScore(results),
+      score: calculateScore(issues),
+      screenshot, // 🖼️ New: include base64 screenshot
     });
+
   } catch (err) {
     console.error("❌ Error during analysis:", err);
     res.status(500).json({
@@ -60,8 +65,8 @@ app.post("/analyze", async (req: Request, res: Response) => {
   }
 });
 
+// 📊 Accessibility scoring logic
 function calculateScore(results: { impact: string | null | undefined }[]): number {
-  const total = results.length;
   const serious = results.filter(
     (i) => i.impact === "serious" || i.impact === "critical"
   ).length;

@@ -11,7 +11,8 @@ export interface Issue {
 // 🧩 Enable stealth plugin to bypass bot detection
 puppeteer.use(StealthPlugin());
 
-export async function runAxeOnURL(url: string): Promise<Issue[]> {
+// ✅ Return both issues and screenshot
+export async function runAxeOnURL(url: string): Promise<{ issues: Issue[]; screenshot: string }> {
   let browser;
 
   try {
@@ -27,7 +28,6 @@ export async function runAxeOnURL(url: string): Promise<Issue[]> {
 
     const page = await browser.newPage();
 
-    // 🔍 Spoof browser to look more human
     await page.setUserAgent(
       "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
     );
@@ -49,8 +49,16 @@ export async function runAxeOnURL(url: string): Promise<Issue[]> {
       timeout: 60000,
     });
 
-    // ⏳ Wait for JS-heavy pages to load
     await new Promise((resolve) => setTimeout(resolve, 3000));
+
+    // ✅ Take screenshot
+    const screenshotBuffer = await page.screenshot({
+      type: "jpeg",
+      quality: 80,
+      fullPage: true,
+    });
+
+    const screenshot = screenshotBuffer.toString("base64");
 
     console.log("🧪 Running Axe accessibility analysis...");
     const results = await new AxePuppeteer(page).analyze();
@@ -62,11 +70,11 @@ export async function runAxeOnURL(url: string): Promise<Issue[]> {
     }));
 
     console.log(`✅ Found ${issues.length} accessibility issues.`);
-    return issues;
-    } catch (error: any) {
+
+    return { issues, screenshot };
+  } catch (error: any) {
     console.error("❌ Axe Analysis Error:", error);
 
-    // 👇 Specific error detection
     if (
       error.message.includes("net::ERR_HTTP2_PROTOCOL_ERROR") ||
       error.message.includes("net::ERR_FAILED") ||
@@ -76,6 +84,7 @@ export async function runAxeOnURL(url: string): Promise<Issue[]> {
     }
 
     throw new Error(`Analysis failed: ${error.message}`);
+  } finally {
+    if (browser) await browser.close();
   }
-
 }
