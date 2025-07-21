@@ -12,13 +12,14 @@ const PORT = process.env.PORT || 5001;
 // ✅ CORS configuration
 app.use(cors({
   origin: [
-    'https://accessly-ai.vercel.app', // allow production frontend
-    // 'http://localhost:5173',       // allow dev frontend (optional)
+    'https://accessly-ai.vercel.app', // ✅ production frontend
+    'http://localhost:5173'           // ✅ local dev frontend
   ],
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: false
 }));
+
 
 // 🔍 Log requests
 app.use((req, res, next) => {
