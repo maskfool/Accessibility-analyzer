@@ -53,10 +53,10 @@ export async function runAxeOnURL(url: string): Promise<{ issues: Issue[]; scree
 
     // ✅ Take screenshot
     const screenshotBuffer = await page.screenshot({
-      type: "jpeg",
-      quality: 80,
-      fullPage: true,
-    });
+  type: "jpeg",
+  fullPage: true,
+});
+
 
     const screenshot = screenshotBuffer.toString("base64");
 
